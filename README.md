@@ -11,3 +11,8 @@ No password algorithm package corresponding to Go has been imported (not a simpl
 
 <br>
 已通过HDU密码学课程设计验收
+
+<br>
+<br>
+代码详解版可见[CSDN个人同账号开源 by祁许](https://blog.csdn.net/2302_78965451?spm=1000.2115.3001.5343)<br>
+The detailed code explanation version can be seen [CSDN Personal Same Account Open Source by Qi Xu]（ https://blog.csdn.net/2302_78965451?spm=1000.2115.3001.5343 )<br>
