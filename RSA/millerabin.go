@@ -20,19 +20,48 @@ func fmod(a *big.Int, p int64) bool {
 
 // 2. MillerRabbin 素性检验
 func MillerRabbin(a *big.Int) bool {
-
 	p := new(big.Int).Set(a)
 
+	// 1. 将 p-1 拆分为 2^s * d
+	d := new(big.Int).Sub(p, big.NewInt(1))
+	s := int64(0)
+	for d.Bit(0) == 0 {
+		s++
+		d.Div(d, big.NewInt(2)) // d 被 2 除尽，直到 d 变为奇数
+	}
+
 	rand.Seed(time.Now().UnixNano())
-	//进行1000次检验
-	for i := 1; i < 100; i++ {
-		//判断失败则退出
+
+	// 2. 进行 100 次检验
+	for i := 0; i < 100; i++ {
+		// 随机选择基数 a，满足 1 < a < p-1
 		n := rand.Int63()
-		if new(big.Int).SetInt64(n).Cmp(p) == 1 {
+		if new(big.Int).SetInt64(n).Cmp(p) >= 0 || n <= 1 {
 			n = rand.Int63n(p.Int64()-1) + 1
 		}
-		if !fmod(p, n) {
-			return false
+		a := new(big.Int).SetInt64(n)
+
+		// 3. 计算 a^d % p 结果儿是不是1和 p-1 是就通过~
+		x := new(big.Int).Exp(a, d, p)
+		if x.Cmp(big.NewInt(1)) == 0 || x.Cmp(new(big.Int).Sub(p, big.NewInt(1))) == 0 {
+			continue // 该次检验通过，继续测试下一个基数
+		}
+
+		// 4. 计算 a^(2^r * d) % p
+		passed := false
+		for r := int64(0); r < s; r++ {
+			x = new(big.Int).Exp(x, big.NewInt(2), p) // x = x^2 % p
+			if x.Cmp(big.NewInt(1)) == 0 {
+				return false // 如果中途 x 变为 1，则 p 不是素数
+			}
+			if x.Cmp(new(big.Int).Sub(p, big.NewInt(1))) == 0 {
+				passed = true
+				break // x 成为 p-1，说明通过了该基数的检验
+			}
+		}
+
+		if !passed {
+			return false // 没有通过检验，p 不是素数
 		}
 	}
 	return true
@@ -43,7 +72,7 @@ func MillerRabbin(a *big.Int) bool {
 */
 func GenerateBigRange(n int64) *big.Int {
 	length := new(big.Int).SetInt64(n)
-	re, _ := new(big.Int).SetString("10", 10)
+	re, _ := new(big.Int).SetString("10", 10) // 比如10的几次
 	re.Exp(re, length, nil)
 	return re
 }

@@ -7,7 +7,6 @@ import (
 
 func Calculate_n(HugeP *big.Int, HugeQ *big.Int) *big.Int {
 	result := new(big.Int)
-	// 使用Mul方法进行乘法运算，将num1和num2相乘的结果存储在result变量中
 	result.Mul(HugeP, HugeQ)
 	fmt.Println("计算n=p*q结果为:", result)
 	return result
@@ -37,7 +36,7 @@ func Extended_gcd(a, b, x, y *big.Int) (*big.Int, *big.Int, *big.Int) {
 	// 递归调用
 	gcd, x1, y1 := Extended_gcd(b, new(big.Int).Mod(a, b), x, y)
 
-	// 计算当前的 x 和 y
+	// 算新的 x 和 y
 	xResult := y1
 	yResult := new(big.Int).Sub(x1, new(big.Int).Mul(new(big.Int).Div(a, b), y1))
 
