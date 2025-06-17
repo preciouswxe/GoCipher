@@ -1,5 +1,5 @@
 # GoCipher
-Encryption of RC4, DES, SM4, and RSA based on Go language
+Encryption of RC4, DES, SM4, and RSA based on Go language<br>
 All algorithms have been encrypted and decrypted for verification (DES version 2 shall prevail)<br>
 No password algorithm package corresponding to Go has been imported (not a simple call), all encrypted source code is hand rubbed<br>
 The detailed code explanation version can be seen : [CSDN Personal Same Account Open Source by Qi Xu](https://blog.csdn.net/2302_78965451?spm=1000.2115.3001.5343) <br>
